@@ -1,5 +1,11 @@
 import Link from 'next/link';
-import React from 'react';
+import { Roboto } from "next/font/google";
+
+// set google font 
+const roboto = Roboto({
+    weight: ['400', '600', '700'],
+    subsets: ["latin"],
+})
 
 const getPosts = async () => {
     const res = await fetch('https://jsonplaceholder.typicode.com/posts');
@@ -7,7 +13,13 @@ const getPosts = async () => {
     return data;
 }
 
-const page = async () => {
+export const metadata = {
+    title: "All Posts",
+    description: "Loading JSON placeholder post using server component",
+};
+
+
+const Posts = async () => {
     const posts = await getPosts()
     return (
         <div className='grid grid-cols-3 gap-6'>
@@ -15,13 +27,13 @@ const page = async () => {
                 posts?.map(post => {
                     return (
                         <div key={post.id}
-                            className='border p-4 rounded-xl'
+                            className={`${roboto.className} border p-4 rounded-xl`}
                         >
                             <h1>{post.id}</h1>
                             <h1>{post.title}</h1>
                             <h1>{post.body}</h1>
                             <Link href={`posts/${post.id}`}>
-                            <button className='p-2 border mt-2 rounded-md bg-blue-500'>Details</button>
+                                <button className='p-2 border mt-2 rounded-md bg-blue-500'>Details</button>
                             </Link>
                         </div>
                     )
@@ -31,4 +43,4 @@ const page = async () => {
     );
 };
 
-export default page;
+export default Posts;

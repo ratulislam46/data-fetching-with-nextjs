@@ -1,9 +1,19 @@
+import { title } from 'process';
 import React from 'react';
 
 const getSinglePosts = async (post_id) => {
     const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${post_id}`);
     const data = await res.json();
     return data;
+}
+
+export async function generateMetadata({ params }) {
+    const id = (await params).id;
+    const singlePost = await getSinglePosts(id);
+    return {
+        title: singlePost.title,
+        description: singlePost.body
+    }
 }
 
 const page = async ({ params }) => {
